@@ -1,0 +1,49 @@
+rules:
+  revenue_decline:
+    enabled: true
+    severity: medium
+    threshold: 0.0
+    direction: lower_than
+    metric: revenue_growth
+    description: "Los ingresos disminuyeron en comparación con el período anterior."
+  net_debt_to_ebitda:
+    enabled: true
+    severity: high
+    threshold: 3.5
+    direction: greater_than
+    metric: net_debt_to_ebitda
+    description: "La relación Deuda Neta/EBITDA supera el umbral configurado de 3.5x."
+  current_ratio:
+    enabled: true
+    severity: high
+    threshold: 1.0
+    direction: lower_than
+    metric: current_ratio
+    description: "El ratio circulante es inferior a 1.0, lo que indica posibles problemas de liquidez."
+  max_drawdown:
+    enabled: true
+    severity: medium
+    threshold: 0.30
+    direction: greater_than
+    metric: max_drawdown
+    description: "La caída máxima supera el 30%, lo que indica un alto riesgo histórico."
+  cash_deterioration:
+    enabled: true
+    severity: medium
+    threshold: -0.10
+    direction: lower_than
+    metric: cash_growth
+    description: "Las reservas de efectivo cayeron más de un 10%."
+  high_volatility:
+    enabled: true
+    severity: medium
+    threshold: 0.40
+    direction: greater_than
+    metric: historical_volatility
+    description: "La volatilidad histórica anualizada es muy alta (>40%)."
+
+score_weights:
+  low: 10
+  medium: 25
+  high: 45
+  critical: 70
