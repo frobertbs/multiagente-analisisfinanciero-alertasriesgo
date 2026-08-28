@@ -19,7 +19,13 @@ def generate_report_agent(state: AnalysisState) -> Dict[str, Any]:
         # Build Context string
         company_name = state.company_name or state.ticker
         
-        risk_signals_str = "\n".join([f"- [{s.severity.upper()}] {s.title}: {s.description} (Value: {s.observed_value})" for s in state.risk_analysis.signals])
+        signals_formatted = []
+        for s in state.risk_analysis.signals:
+            obs = f"{s.observed_value:.2f}"
+            thr = f"{s.threshold}" if s.threshold is not None else "N/A"
+            signals_formatted.append(f"[{s.severity.upper()}] {s.category}: {obs} (Umbral: {thr}) - {s.description}")
+            
+        risk_signals_str = "\n".join(signals_formatted)
         
         news_str = "\n".join([f"- {n.date}: {n.headline} ({n.source})" for n in state.news_data])
         
@@ -43,6 +49,9 @@ def generate_report_agent(state: AnalysisState) -> Dict[str, Any]:
         Do not invent figures, news, ratios, or sources.
         
         IMPORTANT: Write the entire content of the report in Spanish (Español).
+        
+        CRITICAL INSTRUCTION FOR `risk_alerts`:
+        In the `risk_alerts` JSON array, you MUST list the exact strings provided in the "Active Risk Signals" section of the context (including the severity, calculated metric value, and threshold). Do not summarize them. Just copy them exactly as they appear.
         
         Output MUST be valid JSON conforming to the following structure:
         {{
